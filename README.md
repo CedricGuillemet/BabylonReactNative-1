@@ -1,3 +1,20 @@
+# Short how to for building this repro
+
+Full readme down below
+
+1. recursive clone this branch
+1. Run `npm install` in Apps\Playground.
+1. Run `npm install` in Package.
+1. Run `npx gulp buildUWP` in Package. This command will run cmake and build BabylonNative dependencies. It may take a while to complete.
+1. `npx react-native autolink-windows` in the Apps\Playground folder
+1. open `Playground.sln` in `Apps\Playground\windows`
+1. run `npm start` in Apps\Playground.
+1. Press F5 in VS to run and experience the crash
+
+
+
+
+
 # Babylon React Native
 
 This project provides Babylon Native integration into React Native.
