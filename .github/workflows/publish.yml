@@ -83,6 +83,10 @@ jobs:
       - name: Gulp (Windows)
         run: npx gulp buildUWPPublish
         working-directory: ./Package
+      - name: debug dump windows package.json
+        run: |
+          cat package.json
+        working-directory: ./Package/Assembled-Windows
       - name: Upload Assembled-Windows Folder
         uses: actions/upload-artifact@v2
         with:
@@ -110,7 +114,4 @@ jobs:
           path: Package/Assembled-Windows
       - name: Display structure of downloaded Assembled and Assembled-Windows folders
         run: ls -R
-      - name: debug dump windows package.json
-        run: |
-          cat package.json
-        working-directory: ./Package/Assembled-Windows
+
