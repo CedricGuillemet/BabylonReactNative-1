@@ -540,11 +540,11 @@ const patchPackageVersion = async () => {
   const version = (process.argv[2] == '--reactNative') ? process.argv[3] : ((process.argv[3] == '--reactNative') ? process.argv[4] : '');
   if (version == '0.64' || version == '0.65') {
     const currentTag = (process.argv[2] == '--reactNative') ? process.argv[4] : ((process.argv[3] == '--reactNative') ? process.argv[5] : '');
-    if (!currentTag.length)
+    if (currentTag === '')
     {
       throw `No valid version set for @babylonjs/react-native dependency in @babylonjs/react-native-windows`;
     }
-    
+
     console.log(chalk.black.bgCyan(`Updating Package.json for React Native ${version} with Babylon react-native ${currentTag}.`))
 
     const packageJsonPath = '../Modules/@babylonjs/react-native/package.json';
