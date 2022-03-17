@@ -539,7 +539,13 @@ const createPackageUWP = async () => {
 const patchPackageVersion = async () => {
   const version = (process.argv[2] == '--reactNative') ? process.argv[3] : ((process.argv[3] == '--reactNative') ? process.argv[4] : '');
   if (version == '0.64' || version == '0.65') {
-    console.log(chalk.black.bgCyan(`Updating Package.json for React Native ${version}.`))
+    const currentTag = (process.argv[2] == '--reactNative') ? process.argv[4] : ((process.argv[3] == '--reactNative') ? process.argv[5] : '');
+    if (!currentTag.length)
+    {
+      throw `No valid version set for @babylonjs/react-native dependency in @babylonjs/react-native-windows`;
+    }
+    
+    console.log(chalk.black.bgCyan(`Updating Package.json for React Native ${version} with Babylon react-native ${currentTag}.`))
 
     const packageJsonPath = '../Modules/@babylonjs/react-native/package.json';
     const packageJsonPathWindows = '../Modules/@babylonjs/react-native-windows/package.json';
@@ -555,6 +561,9 @@ const patchPackageVersion = async () => {
       packageJsonWindows.peerDependencies['react-native'] = '>=0.65.0';
       packageJsonWindows.peerDependencies['react-native-windows'] = '>=0.65.0';
     }
+
+    // set the @babylonjs/react-native version to be the same as this package
+    packageJsonWindows.peerDependencies['@babylonjs/react-native'] = currentTag;
 
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
     fs.writeFileSync(packageJsonPathWindows, JSON.stringify(packageJsonWindows, null, 2));
