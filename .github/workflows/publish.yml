@@ -1,7 +1,10 @@
 name: Publish Package
-on:
-  release:
-    types: [workflow_dispatch] #[published]
+#on:
+#  release:
+#    types: [published]
+
+on: [workflow_dispatch]
+
 
 # replace ${{ env.Release_Version }} with ${GITHUB_REF/refs\/tags\//} in this script of ${{ github.event.release.name }} in reusable workflows
 env:
