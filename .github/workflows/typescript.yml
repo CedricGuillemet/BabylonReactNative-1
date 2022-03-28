@@ -20,7 +20,7 @@ jobs:
         run: npm install
         working-directory: ./Package
       - name: Gulp
-        run: npx gulp buildTS --releaseVersion ${{ github.event.release.name }}
+        run: npx gulp buildTS --releaseVersion ${{ env.Release_Version }}
         working-directory: ./Package
       - name: Upload Assembled Folder
         uses: actions/upload-artifact@v2

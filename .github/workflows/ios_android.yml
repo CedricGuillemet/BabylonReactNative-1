@@ -31,7 +31,7 @@ jobs:
         run: npm install
         working-directory: ./Package
       - name: Gulp
-        run: npx gulp --reactNative ${{ inputs.react-native-version }} --releaseVersion ${{ github.event.release.name }}
+        run: npx gulp --reactNative ${{ inputs.react-native-version }} --releaseVersion ${{ env.Release_Version }}
         working-directory: ./Package
       - name: Upload Assembled iOS Android Folder
         uses: actions/upload-artifact@v2

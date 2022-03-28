@@ -1,7 +1,11 @@
 name: Publish Package
 on:
   release:
-    types: [published]
+    types: [workflow_dispatch] #[published]
+
+# replace ${{ env.Release_Version }} with ${GITHUB_REF/refs\/tags\//} in this script of ${{ github.event.release.name }} in reusable workflows
+env:
+  Release_Version: 0.0.1
 
 jobs:
   build-android-ios-064:
@@ -63,23 +67,46 @@ jobs:
           path: Package/Assembled-Windows0.65
       - name: Display structure of downloaded Assembled and Assembled-Windows folders
         run: ls -R
-#      - name: Setup Node.js
-#        uses: actions/setup-node@v2.1.2
-#        with:
-#          node-version: '12.x'
-#          registry-url: 'https://registry.npmjs.org'
-#          scope: '@babylonjs'
-#      - name: Version & Publish Package @babylonjs/react-native
-#        run: |
-#          npm version --no-git-tag-version ${GITHUB_REF/refs\/tags\//}
-#          npm publish --access public
-#        working-directory: ./Package/Assembled
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-#      - name: Version & Publish Package @babylonjs/react-native-windows
-#        run: |
-#          npm version --no-git-tag-version ${GITHUB_REF/refs\/tags\//}
-#          npm publish --access public
-#        working-directory: ./Package/Assembled-Windows
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@babylonjs'
+      - name: Version & Publish Package @babylonjs/react-native
+        run: |
+          npm version --no-git-tag-version ${{ env.Release_Version }}
+          npm publish --access public
+        working-directory: ./Package/Assembled
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Version & Publish Package @babylonjs/react-native-iosandroid-0-64
+        run: |
+          npm version --no-git-tag-version ${{ env.Release_Version }}
+          npm publish --access public
+        working-directory: ./Package/Assembled-iOSAndroid0.64
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Version & Publish Package @babylonjs/react-native-iosandroid-0-65
+        run: |
+          npm version --no-git-tag-version ${{ env.Release_Version }}
+          npm publish --access public
+        working-directory: ./Package/Assembled-iOSAndroid0.65
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Version & Publish Package @babylonjs/react-native-windows-0-64
+        run: |
+          npm version --no-git-tag-version ${{ env.Release_Version }}
+          npm publish --access public
+        working-directory: ./Package/Assembled-Windows0.64
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Version & Publish Package @babylonjs/react-native-windows-0-65
+        run: |
+          npm version --no-git-tag-version ${{ env.Release_Version }}
+          npm publish --access public
+        working-directory: ./Package/Assembled-Windows0.64
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
