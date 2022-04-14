@@ -19,6 +19,10 @@
 #include <BabylonNative.h>
 
 using namespace facebook;
+namespace
+{
+    float g_nativeScale{1.f};
+}
 
 extern "C" JNIEXPORT void JNICALL Java_com_babylonreactnative_BabylonNativeInterop_00024BabylonNative_initialize(JNIEnv* env, jclass obj, jobject context, jlong jsiRuntimeRef, jobject jsCallInvokerHolder)
 {
@@ -32,6 +36,9 @@ extern "C" JNIEXPORT void JNICALL Java_com_babylonreactnative_BabylonNativeInter
         }
 
         android::global::Initialize(javaVM, context);
+
+        const auto dpi{ android::global::GetAppContext().getResources().getConfiguration().getDensityDpi() };
+        g_nativeScale = static_cast<float>(dpi) / 160.0f;
 
         initializedJVM = true;
     }
@@ -67,8 +74,10 @@ extern "C" JNIEXPORT void JNICALL Java_com_babylonreactnative_BabylonNativeInter
 extern "C" JNIEXPORT void JNICALL Java_com_babylonreactnative_BabylonNativeInterop_00024BabylonNative_updateView(JNIEnv* env, jclass obj, jobject surface)
 {
     ANativeWindow* window{ ANativeWindow_fromSurface(env, surface) };
-    auto width{ static_cast<size_t>(ANativeWindow_getWidth(window)) };
-    auto height{ static_cast<size_t>(ANativeWindow_getHeight(window)) };
+
+    auto width{ static_cast<size_t>(ANativeWindow_getWidth(window) / g_nativeScale) };
+    auto height{ static_cast<size_t>(ANativeWindow_getHeight(window) / g_nativeScale) };
+
     BabylonNative::UpdateView(window, width, height);
 }
 
@@ -99,10 +108,10 @@ extern "C" JNIEXPORT jboolean JNICALL Java_com_babylonreactnative_BabylonNativeI
 
 extern "C" JNIEXPORT void JNICALL Java_com_babylonreactnative_BabylonNativeInterop_00024BabylonNative_setTouchButtonState(JNIEnv* env, jclass obj, jint pointerId, jboolean isDown, jint x, jint y)
 {
-    BabylonNative::SetTouchButtonState(static_cast<uint32_t>(pointerId), isDown, static_cast<uint32_t>(x), static_cast<uint32_t>(y));
+    BabylonNative::SetTouchButtonState(static_cast<uint32_t>(pointerId), isDown, static_cast<uint32_t>(x / g_nativeScale), static_cast<uint32_t>(y / g_nativeScale));
 }
 
 extern "C" JNIEXPORT void JNICALL Java_com_babylonreactnative_BabylonNativeInterop_00024BabylonNative_setTouchPosition(JNIEnv* env, jclass obj, jint pointerId, jint x, jint y)
 {
-    BabylonNative::SetTouchPosition(static_cast<uint32_t>(pointerId), static_cast<uint32_t>(x), static_cast<uint32_t>(y));
+    BabylonNative::SetTouchPosition(static_cast<uint32_t>(pointerId), static_cast<uint32_t>(x / g_nativeScale), static_cast<uint32_t>(y / g_nativeScale));
 }

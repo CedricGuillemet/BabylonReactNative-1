@@ -42,6 +42,8 @@
 }
 
 - (void)setBounds:(CGRect)bounds {
+    // Set content scale factor so resolution used for rendering and input is the same as the logical resolution
+    super.contentScaleFactor = 1.f;
     [super setBounds:bounds];
     [BabylonNativeInterop updateView:self];
 }

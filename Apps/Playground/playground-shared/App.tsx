@@ -43,6 +43,7 @@ const EngineScreen: FunctionComponent<ViewProps> = (props: ViewProps) => {
        const handlePointerInput = (event: IMouseEvent) => {
          if (event.inputIndex === PointerInput.Move && event.movementX) {
            rootNode.rotate(Vector3.Down(), event.movementX * 0.005);
+           console.log(event.clientX, event.clientY, engine.getRenderWidth(), engine.getRenderHeight());
         };
       };
 

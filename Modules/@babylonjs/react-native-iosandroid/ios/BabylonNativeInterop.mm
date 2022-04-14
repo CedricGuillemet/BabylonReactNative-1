@@ -55,9 +55,9 @@ static NSMutableArray* activeTouches = [NSMutableArray new];
 }
 
 + (void)updateView:(MTKView*)mtkView {
-    const CGFloat scale = mtkView.contentScaleFactor;
-    const int width = static_cast<int>(mtkView.bounds.size.width * scale);
-    const int height = static_cast<int>(mtkView.bounds.size.height * scale);
+    // width and height should be a multiple of contentScaleFactor but it's set to 1
+    const int width = static_cast<int>(mtkView.bounds.size.width);
+    const int height = static_cast<int>(mtkView.bounds.size.height);
     if (width != 0 && height != 0) {
         BabylonNative::UpdateView(mtkView, width, height);
     }
