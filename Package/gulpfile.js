@@ -359,6 +359,11 @@ const buildBabylonNativeSourceTree = async () => {
   await deleteFile(ZIP_PATH);
 
   console.log('Renaming BabylonNative-xxx folder ...');
+  const repoPath = `${TARGET_DIR}/Repo`;
+  if (fs.existsSync(repoPath)) {
+    console.log('Removing existing Repo folder before rename...');
+    deleteFolderRecursive(repoPath);
+  }
   await fs.rename(`${TARGET_DIR}/BabylonNative-${COMMIT_ID}`, `${TARGET_DIR}/Repo`, (err) => {
     if (err) throw err;
     console.log('Rename complete!');
